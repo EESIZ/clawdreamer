@@ -1,0 +1,9 @@
+[Unit]
+Description=Flush session memory daily at 2 AM KST (before Dreamer at 3 AM)
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

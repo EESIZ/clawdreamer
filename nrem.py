@@ -41,15 +41,15 @@ def load_episodes() -> list[dict]:
     pattern = os.path.join(EPISODE_DIR, "*.md")
     files = sorted(glob.glob(pattern))
 
-    # Only include date-named files (YYYY-MM-DD.md)
-    date_re = re.compile(r"\d{4}-\d{2}-\d{2}\.md$")
+    # Include date-named files: YYYY-MM-DD.md and YYYY-MM-DD-slug.md
+    date_re = re.compile(r"\d{4}-\d{2}-\d{2}(-.+)?\.md$")
     files = [f for f in files if date_re.search(f)]
 
     episodes = []
     for path in files[:MAX_EPISODES_PER_RUN]:
         with open(path, "r", encoding="utf-8") as f:
             content = f.read()
-        date = os.path.basename(path).replace(".md", "")
+        date = os.path.basename(path).replace(".md", "")[:10]  # YYYY-MM-DD only
         episodes.append({"path": path, "date": date, "content": content})
 
     log.info("Loaded %d episode files", len(episodes))

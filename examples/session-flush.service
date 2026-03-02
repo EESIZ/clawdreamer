@@ -1,0 +1,11 @@
+[Unit]
+Description=Flush session memory via /new command
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=g158khs
+Environment=TZ=Asia/Seoul
+ExecStart=/home/g158khs/.openclaw/workspace/dreamer/session-flush.sh
+StandardOutput=append:/home/g158khs/.openclaw/workspace/dreamer/dream-log/cron.log
+StandardError=append:/home/g158khs/.openclaw/workspace/dreamer/dream-log/cron.log
