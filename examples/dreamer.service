@@ -1,0 +1,13 @@
+[Unit]
+Description=Dreamer memory consolidation
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=YOUR_USER
+EnvironmentFile=/home/YOUR_USER/.env
+Environment=DREAMER_HOME=/home/YOUR_USER/.dreamer
+WorkingDirectory=/path/to/dreamer
+ExecStart=/usr/bin/python3 dreamer.py --verbose
+StandardOutput=append:/home/YOUR_USER/.dreamer/dream-log/cron.log
+StandardError=append:/home/YOUR_USER/.dreamer/dream-log/cron.log

@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+*.lance/
+dream-log/
+episodes/
+memory-archive/
+*.egg-info/
+dist/
+build/
+.venv/
