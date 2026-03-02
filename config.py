@@ -49,7 +49,8 @@ ST_MODEL_NAME = os.environ.get("ST_MODEL_NAME", "all-MiniLM-L6-v2")
 EMBEDDING_DIM = int(os.environ.get("DREAMER_EMBEDDING_DIM", "1536"))
 
 # LLM (for summarization/classification)
-LLM_PROVIDER = os.environ.get("DREAMER_LLM_PROVIDER", "openai")  # openai or minimax
+LLM_PROVIDER = os.environ.get("DREAMER_LLM_PROVIDER", "openai")  # openai, ollama, or minimax
+OLLAMA_LLM_MODEL = os.environ.get("OLLAMA_LLM_MODEL", "qwen2.5:3b")
 MINIMAX_BASE_URL = "https://api.minimax.io/anthropic"
 
 # NREM parameters

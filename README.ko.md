@@ -166,7 +166,8 @@ $DREAMER_HOME/episodes/2024-03-16.md
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama 서버 URL |
 | `OLLAMA_EMBEDDING_MODEL` | `nomic-embed-text` | Ollama 임베딩 모델 |
 | `ST_MODEL_NAME` | `all-MiniLM-L6-v2` | Sentence-transformers 모델 |
-| `DREAMER_LLM_PROVIDER` | `openai` | `openai` 또는 `minimax` |
+| `DREAMER_LLM_PROVIDER` | `openai` | `openai`, `ollama`, `minimax` |
+| `OLLAMA_LLM_MODEL` | `qwen2.5:3b` | Ollama LLM 모델 (요약/분류용) |
 | `MINIMAX_API_KEY` | (선택) | MiniMax LLM 사용 시 |
 
 ### 튜닝 파라미터
@@ -248,7 +249,10 @@ DB는 PostgreSQL 16, pgvector 확장 사용.
   - OpenAI API 키 (`text-embedding-3-small`)
   - [Ollama](https://ollama.com) 로컬 실행 (`nomic-embed-text`)
   - `pip install sentence-transformers` (`all-MiniLM-L6-v2`)
-- LLM API 키 (OpenAI 또는 MiniMax 등)
+- LLM 제공자 (택 1):
+  - OpenAI API 키 (`gpt-4.1-nano`)
+  - [Ollama](https://ollama.com) 로컬 실행 (`qwen2.5:3b` 등)
+  - MiniMax API 키
 
 ## 라이선스
 

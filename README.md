@@ -166,7 +166,8 @@ All settings are in `config.py` and can be overridden via environment variables:
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
 | `OLLAMA_EMBEDDING_MODEL` | `nomic-embed-text` | Ollama embedding model |
 | `ST_MODEL_NAME` | `all-MiniLM-L6-v2` | Sentence-transformers model |
-| `DREAMER_LLM_PROVIDER` | `openai` | `openai` or `minimax` |
+| `DREAMER_LLM_PROVIDER` | `openai` | `openai`, `ollama`, or `minimax` |
+| `OLLAMA_LLM_MODEL` | `qwen2.5:3b` | Ollama LLM model for summarization |
 | `MINIMAX_API_KEY` | (optional) | If using MiniMax LLM |
 
 ### Tunable Parameters
@@ -248,7 +249,10 @@ Episode Files (YYYY-MM-DD.md)
   - OpenAI API key (`text-embedding-3-small`)
   - [Ollama](https://ollama.com) running locally (`nomic-embed-text`)
   - `pip install sentence-transformers` (`all-MiniLM-L6-v2`)
-- LLM API key (OpenAI or MiniMax, etc.)
+- LLM provider (one of):
+  - OpenAI API key (`gpt-4.1-nano`)
+  - [Ollama](https://ollama.com) running locally (`qwen2.5:3b`, etc.)
+  - MiniMax API key
 
 ## License
 

@@ -8,6 +8,8 @@ from config import (
     LLM_PROVIDER,
     MINIMAX_API_KEY,
     MINIMAX_BASE_URL,
+    OLLAMA_BASE_URL,
+    OLLAMA_LLM_MODEL,
     OPENAI_API_KEY,
 )
 
@@ -78,6 +80,30 @@ def _call_minimax(messages: list[dict], max_tokens: int = 1024) -> str:
     return data["content"][-1].get("text", "")
 
 
+def _call_ollama_llm(messages: list[dict], max_tokens: int = 1024) -> str:
+    """Call Ollama OpenAI-compatible chat completions API."""
+    body = json.dumps({
+        "model": OLLAMA_LLM_MODEL,
+        "messages": messages,
+        "stream": False,
+        "options": {
+            "num_predict": max_tokens,
+            "temperature": 0.3,
+        },
+    }).encode()
+
+    req = urllib.request.Request(
+        f"{OLLAMA_BASE_URL}/v1/chat/completions",
+        data=body,
+        headers={"Content-Type": "application/json"},
+    )
+
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        data = json.loads(resp.read())
+
+    return data["choices"][0]["message"]["content"]
+
+
 def llm_call(prompt: str, system: str = "", max_tokens: int = 1024) -> str:
     """Call LLM with a prompt. Uses configured provider."""
     messages = []
@@ -87,6 +113,8 @@ def llm_call(prompt: str, system: str = "", max_tokens: int = 1024) -> str:
 
     if LLM_PROVIDER == "minimax":
         return _call_minimax(messages, max_tokens)
+    elif LLM_PROVIDER == "ollama":
+        return _call_ollama_llm(messages, max_tokens)
     return _call_openai(messages, max_tokens)
 
 
