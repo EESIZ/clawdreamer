@@ -160,9 +160,14 @@ All settings are in `config.py` and can be overridden via environment variables:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DREAMER_HOME` | `~/.dreamer` | Root data directory |
-| `OPENAI_API_KEY` | (required) | For embeddings |
-| `MINIMAX_API_KEY` | (optional) | If using MiniMax LLM |
+| `DREAMER_EMBEDDING_PROVIDER` | `openai` | `openai`, `ollama`, or `sentence-transformers` |
+| `DREAMER_EMBEDDING_DIM` | `1536` | Must match your embedding model |
+| `OPENAI_API_KEY` | (required if openai) | For OpenAI embeddings |
+| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
+| `OLLAMA_EMBEDDING_MODEL` | `nomic-embed-text` | Ollama embedding model |
+| `ST_MODEL_NAME` | `all-MiniLM-L6-v2` | Sentence-transformers model |
 | `DREAMER_LLM_PROVIDER` | `openai` | `openai` or `minimax` |
+| `MINIMAX_API_KEY` | (optional) | If using MiniMax LLM |
 
 ### Tunable Parameters
 
@@ -239,7 +244,10 @@ Episode Files (YYYY-MM-DD.md)
 ## Requirements
 
 - Python 3.10+
-- OpenAI API key (for embeddings)
+- Embedding provider (one of):
+  - OpenAI API key (`text-embedding-3-small`)
+  - [Ollama](https://ollama.com) running locally (`nomic-embed-text`)
+  - `pip install sentence-transformers` (`all-MiniLM-L6-v2`)
 - LLM API key (OpenAI or MiniMax, etc.)
 
 ## License

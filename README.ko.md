@@ -160,9 +160,14 @@ $DREAMER_HOME/episodes/2024-03-16.md
 | 변수 | 기본값 | 설명 |
 |------|--------|------|
 | `DREAMER_HOME` | `~/.dreamer` | 데이터 루트 디렉토리 |
-| `OPENAI_API_KEY` | (필수) | 임베딩용 |
-| `MINIMAX_API_KEY` | (선택) | MiniMax LLM 사용 시 |
+| `DREAMER_EMBEDDING_PROVIDER` | `openai` | `openai`, `ollama`, `sentence-transformers` |
+| `DREAMER_EMBEDDING_DIM` | `1536` | 임베딩 모델에 맞게 설정 |
+| `OPENAI_API_KEY` | (openai 사용 시 필수) | OpenAI 임베딩용 |
+| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama 서버 URL |
+| `OLLAMA_EMBEDDING_MODEL` | `nomic-embed-text` | Ollama 임베딩 모델 |
+| `ST_MODEL_NAME` | `all-MiniLM-L6-v2` | Sentence-transformers 모델 |
 | `DREAMER_LLM_PROVIDER` | `openai` | `openai` 또는 `minimax` |
+| `MINIMAX_API_KEY` | (선택) | MiniMax LLM 사용 시 |
 
 ### 튜닝 파라미터
 
@@ -239,7 +244,10 @@ DB는 PostgreSQL 16, pgvector 확장 사용.
 ## 요구 사항
 
 - Python 3.10+
-- OpenAI API 키 (임베딩용)
+- 임베딩 제공자 (택 1):
+  - OpenAI API 키 (`text-embedding-3-small`)
+  - [Ollama](https://ollama.com) 로컬 실행 (`nomic-embed-text`)
+  - `pip install sentence-transformers` (`all-MiniLM-L6-v2`)
 - LLM API 키 (OpenAI 또는 MiniMax 등)
 
 ## 라이선스

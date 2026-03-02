@@ -59,16 +59,17 @@ def main():
         count = t.count_rows()
         print(f"\n  LanceDB 'memories' table already exists ({count} rows)")
     else:
+        dim = int(os.environ.get("DREAMER_EMBEDDING_DIM", "1536"))
         schema = pa.schema([
             pa.field("id", pa.utf8()),
             pa.field("text", pa.utf8()),
-            pa.field("vector", pa.list_(pa.float32(), 1536)),
+            pa.field("vector", pa.list_(pa.float32(), dim)),
             pa.field("importance", pa.float64()),
             pa.field("category", pa.utf8()),
             pa.field("createdAt", pa.float64()),
         ])
         db.create_table("memories", schema=schema)
-        print("\n  Created LanceDB 'memories' table (1536-dim vectors)")
+        print(f"\n  Created LanceDB 'memories' table ({dim}-dim vectors)")
 
     # 3. Create example episode (optional)
     if args.example:

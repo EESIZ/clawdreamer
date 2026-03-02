@@ -29,9 +29,24 @@ MEMORY_ARCHIVE_DIR = os.path.join(DREAMER_HOME, "memory-archive")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 MINIMAX_API_KEY = os.environ.get("MINIMAX_API_KEY", "")
 
-# Embedding
+# Embedding provider: "openai", "ollama", or "sentence-transformers"
+EMBEDDING_PROVIDER = os.environ.get("DREAMER_EMBEDDING_PROVIDER", "openai")
+
+# OpenAI embedding
 EMBEDDING_MODEL = "text-embedding-3-small"
-EMBEDDING_DIM = 1536
+
+# Ollama embedding (local)
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+OLLAMA_EMBEDDING_MODEL = os.environ.get("OLLAMA_EMBEDDING_MODEL", "nomic-embed-text")
+
+# Sentence-transformers embedding (local)
+ST_MODEL_NAME = os.environ.get("ST_MODEL_NAME", "all-MiniLM-L6-v2")
+
+# Vector dimension (must match your chosen model)
+# - openai text-embedding-3-small: 1536
+# - nomic-embed-text: 768
+# - all-MiniLM-L6-v2: 384
+EMBEDDING_DIM = int(os.environ.get("DREAMER_EMBEDDING_DIM", "1536"))
 
 # LLM (for summarization/classification)
 LLM_PROVIDER = os.environ.get("DREAMER_LLM_PROVIDER", "openai")  # openai or minimax
