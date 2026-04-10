@@ -174,6 +174,29 @@ $DREAMER_HOME/episodes/2024-03-16.md
 | `OLLAMA_LLM_MODEL` | `qwen2.5:3b` | Ollama LLM 모델 (요약/분류용) |
 | `MINIMAX_API_KEY` | (선택) | MiniMax LLM 사용 시 |
 
+### 에러 알림
+
+Dreamer는 AI 에이전트가 모르게 백그라운드에서 돌아가는 프로세스다. 장애 발생 시 에이전트가 아닌 **운영자**에게 직접 알림을 보낸다.
+
+| 변수 | 기본값 | 설명 |
+|------|--------|------|
+| `DREAMER_ALERT_PROVIDER` | (비활성) | `telegram`, `slack`, `webhook` |
+| `DREAMER_ALERT_TELEGRAM_BOT_TOKEN` | | 텔레그램 봇 토큰 |
+| `DREAMER_ALERT_TELEGRAM_CHAT_ID` | | 알림 받을 텔레그램 채팅 ID |
+| `DREAMER_ALERT_SLACK_WEBHOOK_URL` | | Slack incoming webhook URL |
+| `DREAMER_ALERT_WEBHOOK_URL` | | 일반 webhook (POST JSON) |
+
+설정 예시 (Telegram):
+```bash
+export DREAMER_ALERT_PROVIDER=telegram
+export DREAMER_ALERT_TELEGRAM_BOT_TOKEN=123456:ABC-DEF
+export DREAMER_ALERT_TELEGRAM_CHAT_ID=your_chat_id
+```
+
+에러 발생 시 이런 메시지를 받는다:
+> :skull: **Dreamer Error**
+> HTTPError: HTTP Error 429: Too Many Requests
+
 ### 튜닝 파라미터
 
 | 파라미터 | 기본값 | 설명 |

@@ -104,4 +104,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        log.error("Dreamer failed: %s: %s", type(e).__name__, e)
+        try:
+            from alerts import send_alert
+            send_alert(e)
+        except Exception:
+            pass  # alert delivery failure should never mask the real error
+        sys.exit(1)

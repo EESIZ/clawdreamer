@@ -174,6 +174,29 @@ All settings are in `config.py` and can be overridden via environment variables:
 | `OLLAMA_LLM_MODEL` | `qwen2.5:3b` | Ollama LLM model for summarization |
 | `MINIMAX_API_KEY` | (optional) | If using MiniMax LLM |
 
+### Error Alerts
+
+Dreamer runs as an invisible background process -- the AI agent must not know it exists. When something breaks (API quota exceeded, network errors, etc.), alerts go directly to the **operator**, bypassing the agent entirely.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DREAMER_ALERT_PROVIDER` | (disabled) | `telegram`, `slack`, or `webhook` |
+| `DREAMER_ALERT_TELEGRAM_BOT_TOKEN` | | Telegram bot token |
+| `DREAMER_ALERT_TELEGRAM_CHAT_ID` | | Telegram chat ID for alerts |
+| `DREAMER_ALERT_SLACK_WEBHOOK_URL` | | Slack incoming webhook URL |
+| `DREAMER_ALERT_WEBHOOK_URL` | | Generic webhook (POST JSON) |
+
+Example (Telegram):
+```bash
+export DREAMER_ALERT_PROVIDER=telegram
+export DREAMER_ALERT_TELEGRAM_BOT_TOKEN=123456:ABC-DEF
+export DREAMER_ALERT_TELEGRAM_CHAT_ID=your_chat_id
+```
+
+When an error occurs, you'll get a message like:
+> :skull: **Dreamer Error**
+> HTTPError: HTTP Error 429: Too Many Requests
+
 ### Tunable Parameters
 
 | Parameter | Default | Description |

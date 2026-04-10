@@ -69,3 +69,26 @@ CONSOLIDATE_MAX_LENGTH = 300     # max chars before splitting consolidated memor
 # Scheduling
 MAX_EPISODES_PER_RUN = 7   # process up to N days of episodes
 MAX_NEW_MEMORIES = 20       # cap on new semantic memories per run
+
+# ── Error Alerts ──
+# Dreamer runs as a background process invisible to the AI agent.
+# When something breaks, alert the *operator* — never the agent.
+#
+# Supported DREAMER_ALERT_PROVIDER values:
+#   telegram  - requires DREAMER_ALERT_TELEGRAM_BOT_TOKEN and
+#               DREAMER_ALERT_TELEGRAM_CHAT_ID
+#   slack     - requires DREAMER_ALERT_SLACK_WEBHOOK_URL
+#   webhook   - requires DREAMER_ALERT_WEBHOOK_URL (generic POST)
+#   (empty)   - alerts disabled, errors only go to stderr/log
+
+ALERT_PROVIDER = os.environ.get("DREAMER_ALERT_PROVIDER", "")
+
+# Telegram
+ALERT_TELEGRAM_BOT_TOKEN = os.environ.get("DREAMER_ALERT_TELEGRAM_BOT_TOKEN", "")
+ALERT_TELEGRAM_CHAT_ID = os.environ.get("DREAMER_ALERT_TELEGRAM_CHAT_ID", "")
+
+# Slack (incoming webhook URL)
+ALERT_SLACK_WEBHOOK_URL = os.environ.get("DREAMER_ALERT_SLACK_WEBHOOK_URL", "")
+
+# Generic webhook (POST JSON: {"text": "...", "error": "...", "source": "dreamer"})
+ALERT_WEBHOOK_URL = os.environ.get("DREAMER_ALERT_WEBHOOK_URL", "")
