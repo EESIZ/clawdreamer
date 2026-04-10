@@ -267,6 +267,11 @@ Episode Files (YYYY-MM-DD.md / YYYY-MM-DD-slug.md)
   - [Ollama](https://ollama.com) running locally (`qwen2.5:3b`, etc.)
   - MiniMax API key
 
+
+## Donations
+If you find it useful...
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V21XAPRC)
+
 ## License
 
 MIT
