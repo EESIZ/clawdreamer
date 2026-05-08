@@ -5,27 +5,68 @@ import time
 import uuid
 
 import lancedb
-import pyarrow as pa
 
 from config import LANCEDB_PATH, EMBEDDING_DIM
 
 log = logging.getLogger("dreamer.store")
 
-# Schema for the memories table
-SCHEMA = pa.schema([
-    pa.field("id", pa.utf8()),
-    pa.field("text", pa.utf8()),
-    pa.field("vector", pa.list_(pa.float32(), EMBEDDING_DIM)),
-    pa.field("importance", pa.float64()),
-    pa.field("category", pa.utf8()),
-    pa.field("createdAt", pa.float64()),
-])
+TABLE_NAME = "memories"
+
+
+def _table_names(db) -> list[str]:
+    if hasattr(db, "table_names"):
+        return db.table_names()
+    return db.list_tables()
+
+
+def _create_memories_table(db):
+    """Create a LanceDB table compatible with OpenClaw memory-lancedb.
+
+    OpenClaw's JavaScript plugin creates the vector column from a sample row,
+    which LanceDB stores as fixed_size_list<float>[dim]. Creating an empty table
+    from a pyarrow list schema can produce list<float>, and OpenClaw will not
+    recognize that as a searchable vector column.
+    """
+    table = db.create_table(TABLE_NAME, [{
+        "id": "__schema__",
+        "text": "",
+        "vector": [0.0] * EMBEDDING_DIM,
+        "importance": 0.0,
+        "category": "other",
+        "createdAt": 0.0,
+    }])
+    table.delete("id = '__schema__'")
+    return table
+
+
+def _validate_vector_schema(table) -> None:
+    field = table.schema.field("vector")
+    vector_type = field.type
+    list_size = getattr(vector_type, "list_size", None)
+    if list_size != EMBEDDING_DIM:
+        raise RuntimeError(
+            "Incompatible LanceDB memories.vector dimension: "
+            f"expected {EMBEDDING_DIM}, got {list_size or vector_type}. "
+            "Recreate or migrate the memories table with the current Dreamer setup."
+        )
+    if "fixed_size_list" not in str(vector_type):
+        raise RuntimeError(
+            "Incompatible LanceDB memories.vector schema: "
+            f"expected fixed_size_list<float>[{EMBEDDING_DIM}], got {vector_type}. "
+            "This table was likely created with an older Dreamer pyarrow schema. "
+            "Recreate or migrate it so OpenClaw memory-lancedb can recall memories."
+        )
 
 
 def get_table():
     """Open the memories table."""
     db = lancedb.connect(LANCEDB_PATH)
-    return db.open_table("memories")
+    if TABLE_NAME in _table_names(db):
+        table = db.open_table(TABLE_NAME)
+    else:
+        table = _create_memories_table(db)
+    _validate_vector_schema(table)
+    return table
 
 
 def load_all_memories() -> list[dict]:

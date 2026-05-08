@@ -12,8 +12,32 @@ Usage:
 import argparse
 import os
 import sys
-import time
-import uuid
+
+
+def create_memories_table(db, dim: int):
+    """Create a LanceDB table compatible with OpenClaw memory-lancedb."""
+    table = db.create_table("memories", [{
+        "id": "__schema__",
+        "text": "",
+        "vector": [0.0] * dim,
+        "importance": 0.0,
+        "category": "other",
+        "createdAt": 0.0,
+    }])
+    table.delete("id = '__schema__'")
+    return table
+
+
+def validate_vector_schema(table, dim: int) -> None:
+    field = table.schema.field("vector")
+    vector_type = field.type
+    list_size = getattr(vector_type, "list_size", None)
+    if list_size != dim or "fixed_size_list" not in str(vector_type):
+        raise RuntimeError(
+            "Existing LanceDB 'memories' table has an OpenClaw-incompatible "
+            f"vector schema: {vector_type}. Expected fixed_size_list<float>[{dim}]. "
+            "Back it up, recreate the table with this setup script, then migrate rows."
+        )
 
 
 def main():
@@ -44,9 +68,8 @@ def main():
     # 2. Initialize LanceDB table
     try:
         import lancedb
-        import pyarrow as pa
     except ImportError:
-        print("\nError: lancedb and pyarrow are required.")
+        print("\nError: lancedb is required.")
         print("Run: pip install -r requirements.txt")
         sys.exit(1)
 
@@ -56,19 +79,13 @@ def main():
     table_names = db.table_names() if hasattr(db, "table_names") else db.list_tables()
     if "memories" in table_names:
         t = db.open_table("memories")
+        dim = int(os.environ.get("DREAMER_EMBEDDING_DIM", "1536"))
+        validate_vector_schema(t, dim)
         count = t.count_rows()
         print(f"\n  LanceDB 'memories' table already exists ({count} rows)")
     else:
         dim = int(os.environ.get("DREAMER_EMBEDDING_DIM", "1536"))
-        schema = pa.schema([
-            pa.field("id", pa.utf8()),
-            pa.field("text", pa.utf8()),
-            pa.field("vector", pa.list_(pa.float32(), dim)),
-            pa.field("importance", pa.float64()),
-            pa.field("category", pa.utf8()),
-            pa.field("createdAt", pa.float64()),
-        ])
-        db.create_table("memories", schema=schema)
+        create_memories_table(db, dim)
         print(f"\n  Created LanceDB 'memories' table ({dim}-dim vectors)")
 
     # 3. Create example episode (optional)
