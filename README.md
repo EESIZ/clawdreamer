@@ -189,7 +189,7 @@ Dreamer runs as an invisible background process -- the AI agent must not know it
 Example (Telegram):
 ```bash
 export DREAMER_ALERT_PROVIDER=telegram
-export DREAMER_ALERT_TELEGRAM_BOT_TOKEN=123456:ABC-DEF
+export DREAMER_ALERT_TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 export DREAMER_ALERT_TELEGRAM_CHAT_ID=your_chat_id
 ```
 

@@ -189,7 +189,7 @@ Dreamer는 AI 에이전트가 모르게 백그라운드에서 돌아가는 프�
 설정 예시 (Telegram):
 ```bash
 export DREAMER_ALERT_PROVIDER=telegram
-export DREAMER_ALERT_TELEGRAM_BOT_TOKEN=123456:ABC-DEF
+export DREAMER_ALERT_TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 export DREAMER_ALERT_TELEGRAM_CHAT_ID=your_chat_id
 ```
 

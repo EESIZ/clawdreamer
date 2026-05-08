@@ -4,17 +4,24 @@
 
 set -euo pipefail
 
-export XDG_RUNTIME_DIR=/run/user/1001
-export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+export OPENCLAW_HOME="${OPENCLAW_HOME:-$HOME/.openclaw}"
+export DREAMER_HOME="${DREAMER_HOME:-$HOME/.dreamer}"
+
+uid="$(id -u)"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$uid}"
+export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=$XDG_RUNTIME_DIR/bus}"
 
 # Read OpenAI key from auth.json (needed for config resolution)
 OPENAI_API_KEY=$(python3 -c "
 import json
-with open('/home/g158khs/.openclaw/agents/main/agent/auth.json') as f:
+import os
+auth_path = os.path.join(os.environ['OPENCLAW_HOME'], 'agents/main/agent/auth.json')
+with open(auth_path) as f:
     print(json.load(f)['openai']['key'])
 ")
 export OPENAI_API_KEY
 
 openclaw agent -m '/new' --agent main --timeout 30 > /dev/null 2>&1
 
-echo "$(date '+%Y-%m-%d %H:%M:%S KST') session-flush: /new sent" >> /home/g158khs/.openclaw/workspace/dreamer/dream-log/cron.log
+mkdir -p "$DREAMER_HOME/dream-log"
+echo "$(date '+%Y-%m-%d %H:%M:%S KST') session-flush: /new sent" >> "$DREAMER_HOME/dream-log/cron.log"
