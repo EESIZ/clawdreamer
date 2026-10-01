@@ -17,6 +17,8 @@ TL;DR: Dreams = brain's memory compression process (hypothesis) → Let's give A
 
 Built for [OpenClaw](https://openclaw.ai), but works with any system that produces daily markdown files. -- "Probably."
 
+> **Using [Hermes Agent](https://github.com/NousResearch/hermes-agent)?** Use **[HermesYume](https://github.com/EESIZ/HermesYume)** instead -- the Hermes port of Dreamer. It reads Hermes' `state.db` and consolidates `MEMORY.md` / `USER.md` directly.
+
 ## How It Works
 
 With Claude's help, I referenced sleep neuroscience papers and

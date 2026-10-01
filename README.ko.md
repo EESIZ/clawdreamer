@@ -17,6 +17,8 @@
 
 [OpenClaw](https://openclaw.ai)용으로 만들었지만, 마크다운 파일을 생성하는 어떤 시스템과도 연동 가능하다. - "아마도"
 
+> **[Hermes Agent](https://github.com/NousResearch/hermes-agent)를 쓴다면?** Hermes용으로 옮긴 **[HermesYume](https://github.com/EESIZ/HermesYume)**를 사용하면 된다. Hermes의 `state.db`를 읽어 `MEMORY.md` / `USER.md`를 직접 정리한다.
+
 ## 작동 원리
 
 Claude의 도움을 받아 수면 신경과학 논문을 참고해
